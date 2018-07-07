@@ -1,4 +1,4 @@
-__pycharm__/
+__pycache__/
 *.pyc
 .idea/
-.csv
+*.csv
