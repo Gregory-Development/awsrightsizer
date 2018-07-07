@@ -18,6 +18,7 @@ class Main:
             thresholdMax=args.threshold[1],
             queryDays=args.query[0],
             queryPeriod=args.query[1],
+            output=args.output
     ):
         self.accessKey = accessKey
         self.secretKey = secretKey
@@ -27,6 +28,7 @@ class Main:
         self.threasholdMax = thresholdMax
         self.queryDays = queryDays
         self.queryPeriod = queryPeriod
+        self.output = output
 
     def serializedatetime(self, t):
         if isinstance(t, datetime):
@@ -61,6 +63,9 @@ class Main:
         except:
             logger.exception(f'General Exception')
             return []
+
+    def suggestinstancetype(self):
+        pass
 
     def getcpustats(self):
         if self.accessKey is not None:
@@ -127,21 +132,222 @@ class Main:
 
                             totalAvg = round((sum(metrics)/len(metrics)), 2)
 
+                            t2types = [
+                                'nano',
+                                'micro',
+                                'small',
+                                'medium',
+                                'large',
+                                'xlarge',
+                                '2xlarge'
+                            ]
+                            m5types = [
+                                'large',
+                                'xlarge',
+                                '2xlarge',
+                                '4xlarge',
+                                '12xlarge',
+                                '24xlarge',
+                            ]
+                            m5dtypes = [
+                                'large',
+                                'xlarge',
+                                '2xlarge',
+                                '4xlarge',
+                                '12xlarge',
+                                '24xlarge',
+                            ]
+                            m1types = [
+                                'small',
+                                'medium',
+                                'large',
+                                'xlarge'
+                            ]
+                            m2types = [
+                                'xlarge',
+                                '2xlarge',
+                                '4xlarge'
+                            ]
+                            m3types = [
+                                'medium',
+                                'large',
+                                'xlarge',
+                                '2xlarge',
+                            ]
+                            m4types = [
+                                'large',
+                                'xlarge',
+                                '2xlarge',
+                                '4xlarge',
+                                '10xlarge',
+                                '16xlarge',
+                            ]
+                            c5types = [
+                                'large',
+                                'xlarge',
+                                '2xlarge',
+                                '4xlarge',
+                                '9xlarge',
+                                '18xlarge',
+                            ]
+                            c5dtypes = [
+                                'large',
+                                'xlarge',
+                                '2xlarge',
+                                '4xlarge',
+                                '9xlarge',
+                                '18xlarge',
+                            ]
+                            c4types = [
+                                'large',
+                                'xlarge',
+                                '2xlarge',
+                                '4xlarge',
+                                '8xlarge',
+                            ]
+                            c3types = [
+                                'large',
+                                'xlarge',
+                                '2xlarge',
+                                '4xlarge',
+                                '8xlarge'
+                            ]
+                            cc2types = [
+                                '8xlarge'
+                            ]
+                            c1types = [
+                                'medium',
+                                'xlarge'
+                            ]
+
+                            typesplit = instanceType.split('.')
+
+                            if instanceType == 't2.nano':
+                                suggestedType = f't2.{t2types[1]}'
+
+                            if totalAvg <=5:
+                                suggestedType = f't2.{t2types[1]}'
+                            elif totalAvg > 5 <= 30:
+                                suggestedType = f't2.{t2types[2]}'
+
+                            if typesplit[0] == 't2':
+                                typeindex = t2types.index(typesplit[1])
+                                if totalAvg > 30 <= 50:
+                                    suggestedType = f'{typesplit[0]}.{t2types[typeindex-1]}'
+                                elif totalAvg > 50 <= 80:
+                                    suggestedType = f'{instanceType}'
+                                elif totalAvg > 80 <= 100:
+                                    suggestedType = f'{typesplit[0]}.{t2types[typeindex+1]}'
+
+                            if typesplit[0] == 'm1':
+                                typeindex = m3types.index(typesplit[1])
+                                if totalAvg > 30 <= 50:
+                                    if typeindex == 0:
+                                        suggestedType = f't2.{t2types[2]}'
+                                    if typeindex == 1:
+                                        suggestedType = f't2.{t2types[3]}'
+                                    else:
+                                        try:
+                                            suggestedType = f'm5.{m5types[typeindex]}'
+                                        except IndexError:
+                                            suggestedType = f't2.{t2types[3]}'
+                                elif totalAvg > 50 <= 80:
+                                    suggestedType = f'm5.{instanceType}'
+                                elif totalAvg > 80 <= 100:
+                                    try:
+                                        suggestedType = f'm5.{m5types[typeindex]}'
+                                    except IndexError:
+                                        suggestedType = 'More research necessary'
+
+                            if typesplit[0] == 'm2':
+                                typeindex = m3types.index(typesplit[1])
+                                if totalAvg > 30 <= 50:
+                                    if typeindex == 0:
+                                        suggestedType = f't2.{t2types[2]}'
+                                    if typeindex == 1:
+                                        suggestedType = f't2.{t2types[3]}'
+                                    else:
+                                        try:
+                                            suggestedType = f'm5.{m5types[typeindex]}'
+                                        except IndexError:
+                                            suggestedType = f't2.{t2types[3]}'
+                                elif totalAvg > 50 <= 80:
+                                    suggestedType = f'm5.{instanceType}'
+                                elif totalAvg > 80 <= 100:
+                                    try:
+                                        suggestedType = f'm5.{m5types[typeindex]}'
+                                    except IndexError:
+                                        suggestedType = 'More research necessary'
+
+                            if typesplit[0] == 'm3':
+                                typeindex = m3types.index(typesplit[1])
+                                if totalAvg > 30 <= 50:
+                                    if typeindex == 0:
+                                        suggestedType = f't2.{t2types[2]}'
+                                    if typeindex == 1:
+                                        suggestedType = f't2.{t2types[3]}'
+                                    else:
+                                        try:
+                                            suggestedType = f'm5.{m5types[typeindex]}'
+                                        except IndexError:
+                                            suggestedType = f't2.{t2types[3]}'
+                                elif totalAvg > 50 <= 80:
+                                    suggestedType = f'm5.{instanceType}'
+                                elif totalAvg > 80 <= 100:
+                                    try:
+                                        suggestedType = f'm5.{m5types[typeindex]+1}'
+                                    except IndexError:
+                                        suggestedType = 'More research necessary'
+
+                            if typesplit[0] == 'm4':
+                                typeindex = m4types.index(typesplit[1])
+                                if totalAvg > 30 <= 50:
+                                    try:
+                                        suggestedType = f'm5.{m5types[typeindex]}'
+                                    except IndexError:
+                                        suggestedType = f't2.{t2types[4]}'
+                                elif totalAvg > 50 <= 80:
+                                    suggestedType = f'm5.{instanceType}'
+                                elif totalAvg > 80 <= 100:
+                                    try:
+                                        suggestedType = f'm5.{m5types[typeindex]}'
+                                    except IndexError:
+                                        suggestedType = 'More research necessary'
+
+                            if typesplit[0] == 'm5':
+                                typeindex = m5types.index(typesplit[1])
+                                if totalAvg > 30 <= 50:
+                                    try:
+                                        suggestedType = f'{typesplit[0]}.{m5types[typeindex-1]}'
+                                    except IndexError:
+                                        suggestedType = f't2.{t2types[4]}'
+                                elif totalAvg > 50 <= 80:
+                                    suggestedType = f'{instanceType}'
+                                elif totalAvg > 80 <= 100:
+                                    try:
+                                        suggestedType = f'{typesplit[0]}.{m5types[typeindex]}'
+                                    except IndexError:
+                                        suggestedType = 'More research necessary'
+
+                            if typesplit[0] == 'm5d':
+                                typeindex = m5dtypes.index(typesplit[1])
+                                if totalAvg > 30 <= 50:
+                                    try:
+                                        suggestedType = f'm5d.{m5dtypes[typeindex-1]}'
+                                    except IndexError:
+                                        suggestedType = f't2.{t2types[4]}'
+                                elif totalAvg > 50 <= 80:
+                                    suggestedType = f'{instanceType}'
+                                elif totalAvg > 80 <= 100:
+                                    try:
+                                        suggestedType = f'm5d.{m5dtypes[typeindex+1]}'
+                                    except IndexError:
+                                        suggestedType = 'More research necessary'
+
                         except ClientError as e:
                             logger.error(f'Error getting metrics for instance {b}...{e}')
                         except:
                             logger.exception(f'General Exception')
-
-                    if totalAvg <= 1:
-                        suggestedType = 't2.small'
-                    elif totalAvg > 1 <= 5:
-                        suggestedType = 't2.medium'
-                    elif totalAvg > 5 <= 50:
-                        suggestedType = 'm5.large'
-                    elif totalAvg > 50 <= 80:
-                        suggestedType = 'm5.xlarge'
-                    elif totalAvg > 80 <= 100:
-                        suggestedType = 'm5.2xlarge'
 
                     info.append(
                         {
@@ -163,7 +369,7 @@ class Main:
 
     def main(self):
         today = datetime.date(datetime.now())
-        with open(f'report_{today}.csv', 'w', newline='') as f:
+        with open(self.output, 'w', newline='') as f:
             fieldnames = [
                 'Id',
                 'Name',

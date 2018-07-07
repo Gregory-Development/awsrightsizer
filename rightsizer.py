@@ -3,6 +3,7 @@ Script will collect AWS Instance Usage and suggest a better fit if the instance 
 """
 
 import argparse
+import datetime
 from modules import classes
 
 parser = argparse.ArgumentParser()
@@ -48,6 +49,12 @@ parser.add_argument(
     help='The amount of [days, period] to query Cloudwatch for',
     default=[30,1800],
     required=False
+)
+parser.add_argument(
+    '-o', '--output',
+    dest='output',
+    help='The name/location of the csv file to output',
+    default=f'report_{datetime.datetime.date(datetime.datetime.now())}.csv'
 )
 args = parser.parse_args()
 
