@@ -71,3 +71,7 @@ This will tell the tool to query 15 days at 15 minute intervals.
 
 Let me know if you find bugs :)
 
+### Attribution:
+
+This tools is loosely based on the [awsstats](https://github.com/FittedCloud/awsstats) tool by [FittedCloud](https://www.fittedcloud.com/).
+
