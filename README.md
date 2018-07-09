@@ -1,4 +1,4 @@
-# AWS EC2 Right-Sizer
+# AWS EC2/RDS Instance Right-Sizer
 
 This tool is designed and written in Python 3.6.5 to help you determine the right AWS EC2 instance type for your servers based on historical usage.
 
