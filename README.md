@@ -55,7 +55,7 @@ The tool will output a "report_*date*.csv" file in the directory you ran it in.
 
 Lets now assume that you hate my report name, simply run:
 
-```python rightsizer.py -p dev -p your_awesome_new_csv.csv```
+```python rightsizer.py -p dev -o your_awesome_new_csv.csv```
 
 The tool will now use your_awesome_new_csv.csv is the output file.
 
