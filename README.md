@@ -4,7 +4,7 @@ This tool is designed and written in Python 3.6.5 to help you determine the righ
 
 ## Usage:
 
-```bash
+```
 usage: rightsizer.py [-h] [-p PROFILE] [-k ACCESSKEY] [-s SECRETKEY]
                      [-r REGION] [-t THRESHOLD THRESHOLD] [-q QUERY]
                      [-o OUTPUT]
