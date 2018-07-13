@@ -96,6 +96,7 @@ class Main:
                     instanceState = base['State']['Name']
                     instanceId = base['InstanceId']
                     instanceType = base['InstanceType']
+
                     if instanceState != 'terminated':
                         try:
                             for c in range(0, len(base['Tags'])):
@@ -351,137 +352,25 @@ class Main:
                             if instanceType == 't2.nano':
                                 suggestedType = f't2.{t2types[0]}'
 
-                        # Suggest upgrades for previous generation instances per AWS guidance
-
-                            # If instance is PrevGen t1.micro, suggest t2.nano
-
-                            if instanceType == 't1.micro':
-                                suggestedType = f't2.{t2types[0]}*'
-
-                            # If instance is PrevGen m1 class, suggest t2 class
-
-                            if typesplit[0] == 'm1':
-                                if typesplit[1] == 'small':
-                                    suggestedType = f't2.{t2types[2]}*'
-                                elif typesplit[1] == 'medium':
-                                    suggestedType = f't2.{t2types[3]}*'
-                                elif typesplit[1] == 'large':
-                                    suggestedType = f't2.{t2types[4]}*'
-                                elif typesplit[1] == 'xlarge':
-                                    suggestedType = f't2.{t2types[5]}*'
-
-                            # If instance is PrevGen m3 class, suggest m5 class
-
-                            if typesplit[0] == 'm3':
-                                if typesplit[1] == 'medium':
-                                    suggestedType = f't2.{t2types[3]}*'
-                                elif typesplit[1] == 'large':
-                                    suggestedType = f'm5.{m5types[0]}*'
-                                elif typesplit[1] == 'xlarge':
-                                    suggestedType = f'm5.{m5types[1]}*'
-                                elif typesplit[1] == '2xlarge':
-                                    suggestedType = f'm5.{m5types[2]}*'
-
-                            # If instance is PrevGen c1 class, suggest c5 class
-
-                            if typesplit[0] == 'c1':
-                                if typesplit[1] == 'medium':
-                                    suggestedType = f'c5.{c5types[0]}*'
-                                elif typesplit[1] == 'xlarge':
-                                    suggestedType = f'c5.{c5types[1]}*'
-
-                            # If instnace is PrevGen cc2 class, suggest c5 class
-
-                            if typesplit[0] == 'cc2':
-                                if typesplit[1] == '8xlarge':
-                                    suggestedType = f'c5.{c5types[4]}*'
-
-                            # If instance is PrevGen c3 class, suggest c5 class
-
-                            if typesplit[0] == 'c3':
-                                if typesplit[1] == 'large':
-                                    suggestedType = f'c5.{c5types[0]}*'
-                                elif typesplit[1] == 'xlarge':
-                                    suggestedType = f'c5.{c5types[1]}*'
-                                elif typesplit[1] == '2xlarge':
-                                    suggestedType = f'c5.{c5types[2]}*'
-                                elif typesplit[1] == '4xlarge':
-                                    suggestedType = f'c5.{c5types[3]}*'
-                                elif typesplit[1] == '8xlarge':
-                                    suggestedType = f'c5.{c5types[4]}*'
-
-                            # If instance is PrevGen g2 class, suggest g3 class
-
-                            if typesplit[0] == 'g2':
-                                if typesplit[1] == '2xlarge':
-                                    suggestedType = f'g3.{g3types[0]}*'
-                                elif typesplit[1] == '8xlarge':
-                                    suggestedType = f'g3.{g3types[1]}*'
-
-                            # If instance is PrevGen m2 class, suggest r4 class
-
-                            if typesplit[0] == 'm2':
-                                if typesplit[1] == 'xlarge':
-                                    suggestedType = f'r4.{r4types[0]}*'
-                                elif typesplit[1] == '2xlarge':
-                                    suggestedType = f'r4.{r4types[1]}*'
-                                elif typesplit[1] == '4xlarge':
-                                    suggestedType = f'r4.{r4types[2]}*'
-
-                            # If instance is PrevGen cr1 class, suggest r4 class
-
-                            if typesplit[0] == 'cr1':
-                                if typesplit[1] == '8xlarge':
-                                    suggestedType = f'r4.{r4types[4]}*'
-
-                            # If instance is PrevGen r3 class, suggest r4 class
-
-                            if typesplit[0] == 'r3':
-                                if typesplit[1] == 'large':
-                                    suggestedType = f'r4.{r4types[0]}*'
-                                elif typesplit[1] == 'xlarge':
-                                    suggestedType = f'r4.{r4types[1]}*'
-                                elif typesplit[1] == '2xlarge':
-                                    suggestedType = f'r4.{r4types[2]}*'
-                                elif typesplit[1] == '4xlarge':
-                                    suggestedType = f'r4.{r4types[3]}*'
-                                elif typesplit[1] == '8xlarge':
-                                    suggestedType = f'r4.{r4types[4]}*'
-
-                            # If instance is PrevGen i2 class, suggest i3 class
-
-                            if typesplit[0] == 'i2':
-                                if typesplit[1] == 'xlarge':
-                                    suggestedType = f'i3.{i3types[1]}*'
-                                if typesplit[1] == '2xlarge':
-                                    suggestedType = f'i3.{i3types[2]}*'
-                                if typesplit[1] == '4xlarge':
-                                    suggestedType = f'i3.{i3types[3]}*'
-                                if typesplit[1] == '8xlarge':
-                                    suggestedType = f'i3.{i3types[4]}*'
-
-                            # If instance is PrevGen hs1 class, suggest d2 class
-
-                            if typesplit[0] == 'hs1':
-                                if typesplit[1] == '8xlarge':
-                                    suggestedType = f'd2.{d2types[2]}*'
-
                         # Suggest Instance Types based on AVG CPU usage keeping general instance type class, current gen only
-
-                            if typesplit[0] == 't2':
+                            if typesplit[0] == 't1':
+                                suggestedType = f't2.{t2types[0]}'
+                            elif typesplit[0] == 't2':
                                 typeindex = t2types.index(f'{typesplit[1]}')
                                 if totalAvg <=5:
                                     suggestedType = f'{typesplit[0]}.{t2types[0]}'
                                 elif totalAvg > 5 <= 30:
-                                    try:
-                                        suggestedType = f'{typesplit[0]}.{t2types[typeindex-1]}'
-                                    except ValueError:
+                                    index = typeindex -1
+                                    if index < 0:
                                         suggestedType = f'{typesplit[0]}.{t2types[0]}'
+                                    else:
+                                        suggestedType = f'{typesplit[0]}.{t2types[index]}'
                                 elif totalAvg > 30 <= 80:
                                     suggestedType = f'{instanceType}'
                                 elif totalAvg > 80:
                                     try:
-                                        suggestedType = f'{typesplit[0]}.{t2types[typeindex+1]}'
+                                        index = typeindex + 1
+                                        suggestedType = f'{typesplit[0]}.{t2types[index]}'
                                     except IndexError:
                                         suggestedType = f'm4.{m4types[3]}'
                             elif typesplit[0] == 'm5':
@@ -489,15 +378,17 @@ class Main:
                                 if totalAvg <= 5:
                                     suggestedType = f'{typesplit[0]}.{m5types[0]}'
                                 elif totalAvg > 5 <= 30:
-                                    try:
-                                        suggestedType = f'{typesplit[0]}.{m5types[typeindex-1]}'
-                                    except ValueError:
+                                    index = typeindex -1
+                                    if index < 0:
                                         suggestedType = f'{typesplit[0]}.{m5types[0]}'
+                                    else:
+                                        suggestedType = f'{typesplit[0]}.{m5types[index]}'
                                 elif totalAvg > 30 <= 80:
                                     suggestedType = f'{instanceType}'
                                 elif totalAvg > 80:
                                     try:
-                                        suggestedType = f'{typesplit[0]}.{m5types[typeindex+1]}'
+                                        index = typeindex + 1
+                                        suggestedType = f'{typesplit[0]}.{m5types[index]}'
                                     except IndexError:
                                         suggestedType = f'm5.{m5types[5]}'
                             elif typesplit[0] == 'm5d':
@@ -505,15 +396,17 @@ class Main:
                                 if totalAvg <= 5:
                                     suggestedType = f'{typesplit[0]}.{m5dtypes[0]}'
                                 elif totalAvg > 5 <= 30:
-                                    try:
-                                        suggestedType = f'{typesplit[0]}.{m5dtypes[typeindex-1]}'
-                                    except ValueError:
+                                    index = typeindex - 1
+                                    if index < 0:
                                         suggestedType = f'{typesplit[0]}.{m5dtypes[0]}'
+                                    else:
+                                        suggestedType = f'{typesplit[0]}.{m5dtypes[index]}'
                                 elif totalAvg > 30 <= 80:
                                     suggestedType = f'{instanceType}'
                                 elif totalAvg > 80:
                                     try:
-                                        suggestedType = f'{typesplit[0]}.{m5dtypes[typeindex+1]}'
+                                        index = typeindex + 1
+                                        suggestedType = f'{typesplit[0]}.{m5dtypes[index]}'
                                     except IndexError:
                                         suggestedType = f'm5d.{m5dtypes[5]}'
                             elif typesplit[0] == 'm4':
@@ -521,31 +414,93 @@ class Main:
                                 if totalAvg <= 5:
                                     suggestedType = f'{typesplit[0]}.{m4types[0]}'
                                 elif totalAvg > 5 <= 30:
-                                    try:
-                                        suggestedType = f'{typesplit[0]}.{m4types[typeindex-1]}'
-                                    except ValueError:
+                                    index = typeindex - 1
+                                    if index < 0:
                                         suggestedType = f'{typesplit[0]}.{m4types[0]}'
+                                    else:
+                                        suggestedType = f'{typesplit[0]}.{m4types[index]}'
                                 elif totalAvg > 30 <= 80:
                                     suggestedType = f'{instanceType}'
                                 elif totalAvg > 80:
                                     try:
-                                        suggestedType = f'{typesplit[0]}.{m4types[typeindex+1]}'
+                                        index = typeindex + 1
+                                        suggestedType = f'{typesplit[0]}.{m4types[index]}'
                                     except IndexError:
                                         suggestedType = f'm5.{m5types[5]}'
+                            elif typesplit[0] == 'm3': # PrevGen Upgrade to M5
+                                typeindex = m3types.index(typesplit[1])
+                                if totalAvg <= 5:
+                                    suggestedType = f't2.{t2types[2]}*'
+                                elif totalAvg > 5 <= 30:
+                                    index = typeindex - 2
+                                    if index < 0:
+                                        suggestedType = f't2.{t2types[3]}*'
+                                    else:
+                                        suggestedType = f'm5.{m5types[index]}*'
+                                elif totalAvg > 30 <= 80:
+                                    index = typeindex - 1
+                                    if index < 0:
+                                        suggestedType = f'm5.{m5types[2]}*'
+                                    else:
+                                        suggestedType = f'm5.{m5types[index]}*'
+                                elif totalAvg > 80:
+                                    try:
+                                        suggestedType = f'm5.{m5types[typeindex]}*'
+                                    except IndexError:
+                                        suggestedType = f'm5.{m5types[2]}*'
+                            elif typesplit[0] == 'm2': # PrevGen Upgrade to R4
+                                typeindex = m2types.index(f'{typesplit[1]}')
+                                if totalAvg <= 5:
+                                    suggestedType = f'r4.{r4types[0]}*'
+                                elif totalAvg > 5 <= 30:
+                                    index = typeindex - 1
+                                    if index < 0:
+                                        suggestedType = f'r4.{r4types[0]}*'
+                                    else:
+                                        suggestedType = f'r4.{r4types[index]}*'
+                                elif totalAvg > 30 <= 80:
+                                    index = typeindex + 1
+                                    suggestedType = f'r4.{r4types[index]}*'
+                                elif totalAvg > 80:
+                                    index = typeindex + 2
+                                    try:
+                                        suggestedType = f'r4.{r4types[index]}*'
+                                    except IndexError:
+                                        suggestedType = f'r4.{r4types[5]}*'
+                            elif typesplit[0] == 'm1': # PrevGen Upgrade to T2
+                                typeindex = m1types.index(f'{typesplit[1]}')
+                                if totalAvg <= 5:
+                                    suggestedType = f't2.{t2types[0]}*'
+                                elif totalAvg > 5 <= 30:
+                                    index = typeindex - 1
+                                    if index < 0:
+                                        suggestedType = f't2.{t2types[0]}*'
+                                    else:
+                                        suggestedType = f't2.{t2types[index]}*'
+                                elif totalAvg > 30 <= 80:
+                                    suggestedType = f't2.{t2types[typeindex]}*'
+                                elif totalAvg > 80:
+                                    try:
+                                        index = typeindex + 1
+                                        suggestedType = f't2.{t2types[index]}*'
+                                    except IndexError:
+                                        suggestedType = f'm4.{m4types[3]}*'
                             elif typesplit[0] == 'c5':
                                 typeindex = c5types.index(f'{typesplit[1]}')
                                 if totalAvg <= 5:
                                     suggestedType = f'{typesplit[0]}.{c5types[0]}'
                                 elif totalAvg > 5 <= 30:
-                                    try:
-                                        suggestedType = f'{typesplit[0]}.{c5types[typeindex-1]}'
-                                    except ValueError:
+                                    index = typeindex - 1
+                                    if index < 0:
                                         suggestedType = f'{typesplit[0]}.{c5types[0]}'
+                                    else:
+                                        suggestedType = f'{typesplit[0]}.{c5types[index]}'
                                 elif totalAvg > 30 <= 80:
                                     suggestedType = f'{instanceType}'
                                 elif totalAvg > 80:
                                     try:
-                                        suggestedType = f'{typesplit[0]}.{c5types[typeindex+1]}'
+                                        index = typeindex + 1
+                                        suggestedType = f'{typesplit[0]}.{c5types[index]}'
                                     except IndexError:
                                         suggestedType = f'c5.{c5types[5]}'
                             elif typesplit[0] == 'c5d':
@@ -553,15 +508,17 @@ class Main:
                                 if totalAvg <= 5:
                                     suggestedType = f'{typesplit[0]}.{c5dtypes[0]}'
                                 elif totalAvg > 5 <= 30:
-                                    try:
-                                        suggestedType = f'{typesplit[0]}.{c5dtypes[typeindex-1]}'
-                                    except ValueError:
+                                    index = typeindex -1
+                                    if index < 0:
                                         suggestedType = f'{typesplit[0]}.{c5dtypes[0]}'
+                                    else:
+                                        suggestedType = f'{typesplit[0]}.{c5dtypes[index]}'
                                 elif totalAvg > 30 <= 80:
                                     suggestedType = f'{instanceType}'
                                 elif totalAvg > 80:
                                     try:
-                                        suggestedType = f'{typesplit[0]}.{c5dtypes[typeindex+1]}'
+                                        index = typeindex + 1
+                                        suggestedType = f'{typesplit[0]}.{c5dtypes[index]}'
                                     except IndexError:
                                         suggestedType = f'c5d.{c5dtypes[5]}'
                             elif typesplit[0] == 'c4':
@@ -569,31 +526,97 @@ class Main:
                                 if totalAvg <= 5:
                                     suggestedType = f'{typesplit[0]}.{c4types[0]}'
                                 elif totalAvg > 5 <= 30:
-                                    try:
-                                        suggestedType = f'{typesplit[0]}.{c4types[typeindex-1]}'
-                                    except ValueError:
+                                    index = typeindex - 1
+                                    if index < 0:
                                         suggestedType = f'{typesplit[0]}.{c4types[0]}'
+                                    else:
+                                        suggestedType = f'{typesplit[0]}.{c4types[index]}'
                                 elif totalAvg > 30 <= 80:
                                     suggestedType = f'{instanceType}'
                                 elif totalAvg > 80:
                                     try:
-                                        suggestedType = f'{typesplit[0]}.{c4types[typeindex+1]}'
+                                        index = typeindex + 1
+                                        suggestedType = f'{typesplit[0]}.{c4types[index]}'
                                     except IndexError:
                                         suggestedType = f'c5.{c5types[5]}'
+                            elif typesplit[0] == 'c3': # PrevGen Upgrade to C5
+                                typeindex = c3types.index(f'{typesplit[1]}')
+                                if totalAvg <= 5:
+                                    suggestedType = f'c5.{c5types[0]}*'
+                                elif totalAvg > 5 <= 30:
+                                    index = typeindex - 1
+                                    if index < 0:
+                                        suggestedType = f'c5.{c5types[0]}*'
+                                    else:
+                                        suggestedType = f'c5.{c5types[index]}*'
+                                elif totalAvg > 30 <= 80:
+                                    suggestedType = f'c5.{c5types[typeindex]}*'
+                                elif totalAvg > 80:
+                                    try:
+                                        index = typeindex + 1
+                                        suggestedType = f'c5.{c5types[index]}*'
+                                    except IndexError:
+                                        suggestedType = f'c5.{c5types[5]}*'
+                            elif typesplit[0] == 'cc2': # PrevGen Upgrade to C5
+                                typeindex = cc2types.index(f'{typesplit[1]}')
+                                if totalAvg <= 5:
+                                    suggestedType = f'c5.{c5types[0]}*'
+                                elif totalAvg > 5 <= 30:
+                                    index = typeindex - 1
+                                    if index < 0:
+                                        suggestedType = f'c5.{c5types[3]}*'
+                                    else:
+                                        suggestedType = f'c5.{c5types[index]}*'
+                                elif totalAvg > 30 <= 80:
+                                    suggestedType = f'c5.{c5types[4]}*'
+                                elif totalAvg > 80:
+                                    try:
+                                        index = typeindex + 1
+                                        suggestedType = f'c5.{c5types[index]}*'
+                                    except IndexError:
+                                        suggestedType = f'c5.{c5types[5]}*'
+                            elif typesplit[0] == 'cr1': # PrevGen Upgrade to R4
+                                typeindex = m2types.index(f'{typesplit[1]}')
+                                if totalAvg <= 30:
+                                    suggestedType = f'r4.{r4types[0]}'
+                                elif totalAvg > 30 <= 80:
+                                    suggestedType = f'r4.{r4types[4]}'
+                                elif totalAvg > 80:
+                                        suggestedType = f'r4.{r4types[5]}'
+                            elif typesplit[0] == 'c1': # PrevGen Upgrade to C5
+                                typeindex = c1types.index(f'{typesplit[1]}')
+                                if totalAvg <= 5:
+                                    suggestedType = f'c5.{c5types[0]}*'
+                                elif totalAvg > 5 <= 30:
+                                    index = typeindex - 1
+                                    if index < 0:
+                                        suggestedType = f'c5.{c5types[0]}*'
+                                    else:
+                                        suggestedType = f'c5.{c5types[index]}*'
+                                elif totalAvg > 30 <= 80:
+                                    suggestedType = f'c5.{c5types[typeindex]}*'
+                                elif totalAvg > 80:
+                                    try:
+                                        index = typeindex + 1
+                                        suggestedType = f'c5.{c5types[index]}*'
+                                    except IndexError:
+                                        suggestedType = f'c5.{c5types[5]}*'
                             elif typesplit[0] == 'x1':
                                 typeindex = x1types.index(f'{typesplit[1]}')
                                 if totalAvg <= 5:
                                     suggestedType = f'{typesplit[0]}.{x1types[0]}'
                                 elif totalAvg > 5 <= 30:
-                                    try:
-                                        suggestedType = f'{typesplit[0]}.{x1types[typeindex-1]}'
-                                    except ValueError:
+                                    index = typeindex - 1
+                                    if index < 0:
                                         suggestedType = f'{typesplit[0]}.{x1types[0]}'
+                                    else:
+                                        suggestedType = f'{typesplit[0]}.{x1types[index]}'
                                 elif totalAvg > 30 <= 80:
                                     suggestedType = f'{instanceType}'
                                 elif totalAvg > 80:
                                     try:
-                                        suggestedType = f'{typesplit[0]}.{x1types[typeindex+1]}'
+                                        index = typeindex + 1
+                                        suggestedType = f'{typesplit[0]}.{x1types[index]}'
                                     except IndexError:
                                         suggestedType = f'x1e.{x1etypes[5]}'
                             elif typesplit[0] == 'x1e':
@@ -601,15 +624,17 @@ class Main:
                                 if totalAvg <= 5:
                                     suggestedType = f'{typesplit[0]}.{x1etypes[0]}'
                                 elif totalAvg > 5 <= 30:
-                                    try:
-                                        suggestedType = f'{typesplit[0]}.{x1etypes[typeindex-1]}'
-                                    except ValueError:
+                                    index = typeindex -1
+                                    if index < 0:
                                         suggestedType = f'{typesplit[0]}.{x1etypes[0]}'
+                                    else:
+                                        suggestedType = f'{typesplit[0]}.{x1etypes[index]}'
                                 elif totalAvg > 30 <= 80:
                                     suggestedType = f'{instanceType}'
                                 elif totalAvg > 80:
                                     try:
-                                        suggestedType = f'{typesplit[0]}.{x1etypes[typeindex+1]}'
+                                        index = typeindex + 1
+                                        suggestedType = f'{typesplit[0]}.{x1etypes[index]}'
                                     except IndexError:
                                         suggestedType = f'x1e.{x1etypes[5]}'
                             elif typesplit[0] == 'r4':
@@ -617,31 +642,53 @@ class Main:
                                 if totalAvg <= 5:
                                     suggestedType = f'{typesplit[0]}.{r4types[0]}'
                                 elif totalAvg > 5 <= 30:
-                                    try:
-                                        suggestedType = f'{typesplit[0]}.{r4types[typeindex-1]}'
-                                    except ValueError:
-                                        suggestedType = f'{typesplit[0]}.{f4types[0]}'
+                                    index = typeindex - 1
+                                    if index < 0:
+                                        suggestedType = f'{typesplit[0]}.{r4types[0]}'
+                                    else:
+                                        suggestedType = f'{typesplit[0]}.{r4types[index]}'
                                 elif totalAvg > 30 <= 80:
                                     suggestedType = f'{instanceType}'
                                 elif totalAvg > 80:
                                     try:
-                                        suggestedType = f'{typesplit[0]}.{r4types[typeindex+1]}'
+                                        index = typeindex + 1
+                                        suggestedType = f'{typesplit[0]}.{r4types[index]}'
                                     except IndexError:
                                         suggestedType = f'x1.{x1types[0]}'
+                            elif typesplit[0] == 'r3': # PrevGen Upgrade to R4
+                                typeindex = r3types.index(f'{typesplit[1]}')
+                                if totalAvg <= 5:
+                                    suggestedType = f'r4.{r4types[0]}*'
+                                elif totalAvg > 5 <= 30:
+                                    index = typeindex - 1
+                                    if index < 0:
+                                        suggestedType = f'r4.{r4types[0]}*'
+                                    else:
+                                        suggestedType = f'r4.{r4types[index]}*'
+                                elif totalAvg > 30 <= 80:
+                                    suggestedType = f'r4.{r4types[typeindex]}*'
+                                elif totalAvg > 80:
+                                    try:
+                                        index = typeindex + 1
+                                        suggestedType = f'r4.{r4types[index]}*'
+                                    except IndexError:
+                                        suggestedType = f'x1.{x1types[0]}*'
                             elif typesplit[0] == 'p2':
                                 typeindex = p2types.index(f'{typesplit[1]}')
                                 if totalAvg <= 5:
                                     suggestedType = f'{typesplit[0]}.{p2types[0]}'
                                 elif totalAvg > 5 <= 30:
-                                    try:
-                                        suggestedType = f'{typesplit[0]}.{p2types[typeindex-1]}'
-                                    except ValueError:
+                                    index = typeindex - 1
+                                    if index < 0:
                                         suggestedType = f'{typesplit[0]}.{p2types[0]}'
+                                    else:
+                                        suggestedType = f'{typesplit[0]}.{p2types[index]}'
                                 elif totalAvg > 30 <= 80:
                                     suggestedType = f'{instanceType}'
                                 elif totalAvg > 80:
                                     try:
-                                        suggestedType = f'{typesplit[0]}.{p2types[typeindex+1]}'
+                                        index = typeindex + 1
+                                        suggestedType = f'{typesplit[0]}.{p2types[index]}'
                                     except IndexError:
                                         suggestedType = f'g3.{g3types[0]}'
                             elif typesplit[0] == 'p3':
@@ -649,15 +696,17 @@ class Main:
                                 if totalAvg <= 5:
                                     suggestedType = f'{typesplit[0]}.{p3types[0]}'
                                 elif totalAvg > 5 <= 30:
-                                    try:
-                                        suggestedType = f'{typesplit[0]}.{p3types[typeindex-1]}'
-                                    except ValueError:
+                                    index = typeindex - 1
+                                    if index < 0:
                                         suggestedType = f'{typesplit[0]}.{p3types[0]}'
+                                    else:
+                                        suggestedType = f'{typesplit[0]}.{p3types[index]}'
                                 elif totalAvg > 30 <= 80:
                                     suggestedType = f'{instanceType}'
                                 elif totalAvg > 80:
                                     try:
-                                        suggestedType = f'{typesplit[0]}.{p3types[typeindex+1]}'
+                                        index = typeindex + 1
+                                        suggestedType = f'{typesplit[0]}.{p3types[index]}'
                                     except IndexError:
                                         suggestedType = f'g3.{g3types[0]}'
                             elif typesplit[0] == 'g3':
@@ -665,47 +714,79 @@ class Main:
                                 if totalAvg <= 5:
                                     suggestedType = f'{typesplit[0]}.{g3types[0]}'
                                 elif totalAvg > 5 <= 30:
-                                    try:
-                                        suggestedType = f'{typesplit[0]}.{g3types[typeindex-1]}'
-                                    except ValueError:
+                                    index = typeindex - 1
+                                    if index < 0:
                                         suggestedType = f'{typesplit[0]}.{g3types[0]}'
+                                    else:
+                                        suggestedType = f'{typesplit[0]}.{g3types[index]}'
                                 elif totalAvg > 30 <= 80:
                                     suggestedType = f'{instanceType}'
                                 elif totalAvg > 80:
                                     try:
-                                        suggestedType = f'{typesplit[0]}.{g3types[typeindex+1]}'
+                                        index = typeindex + 1
+                                        suggestedType = f'{typesplit[0]}.{g3types[index]}'
                                     except IndexError:
                                         suggestedType = f'f1.{f1types[1]}'
+                            elif typesplit[0] == 'g2': # PrevGen Upgrade to G3
+                                typeindex = g2types.index(f'{typesplit[1]}')
+                                if totalAvg <= 5:
+                                    suggestedType = f'g3.{g3types[0]}*'
+                                elif totalAvg > 5 <= 30:
+                                    index = typeindex - 1
+                                    if index < 0:
+                                        suggestedType = f'g3.{g3types[0]}*'
+                                    else:
+                                        suggestedType = f'g3.{g3types[index]}*'
+                                elif totalAvg > 30 <= 80:
+                                    suggestedType = f'g3.{typeindex}*'
+                                elif totalAvg > 80:
+                                    try:
+                                        index = typeindex + 1
+                                        suggestedType = f'g3.{g3types[index]}*'
+                                    except IndexError:
+                                        suggestedType = f'f1.{f1types[1]}*'
                             elif typesplit[0] == 'f1':
                                 typeindex = f1types.index(f'{typesplit[1]}')
                                 if totalAvg <= 5:
                                     suggestedType = f'{typesplit[0]}.{f1types[0]}'
                                 elif totalAvg > 5 <= 30:
-                                    try:
-                                        suggestedType = f'{typesplit[0]}.{f1types[typeindex-1]}'
-                                    except ValueError:
+                                    index = typeindex - 1
+                                    if index < 0:
                                         suggestedType = f'{typesplit[0]}.{f1types[0]}'
+                                    else:
+                                        suggestedType = f'{typesplit[0]}.{f1types[index]}'
                                 elif totalAvg > 30 <= 80:
                                     suggestedType = f'{instanceType}'
                                 elif totalAvg > 80:
                                     try:
-                                        suggestedType = f'{typesplit[0]}.{f1types[typeindex+1]}'
+                                        index = typeindex + 1
+                                        suggestedType = f'{typesplit[0]}.{f1types[index]}'
                                     except IndexError:
                                         suggestedType = f'f1.{f1types[1]}'
+                            elif typesplit[0] == 'hs1': # PrevGen Upgrade to d2
+                                typeindex = hs1types.index(f'{typesplit[1]}')
+                                if totalAvg <= 5:
+                                    suggestedType = f'd2.{d2types[0]}*'
+                                elif totalAvg > 5 <= 30:
+                                        suggestedType = f'd2.{d2types[1]}*'
+                                elif totalAvg > 30:
+                                        suggestedType = f'd2.{d2types[3]}*'
                             elif typesplit[0] == 'h1':
                                 typeindex = h1types.index(f'{typesplit[1]}')
                                 if totalAvg <= 5:
                                     suggestedType = f'{typesplit[0]}.{h1types[0]}'
                                 elif totalAvg > 5 <= 30:
-                                    try:
-                                        suggestedType = f'{typesplit[0]}.{h1types[typeindex-1]}'
-                                    except ValueError:
+                                    index = typeindex - 1
+                                    if index < 0:
                                         suggestedType = f'{typesplit[0]}.{h1types[0]}'
+                                    else:
+                                        suggestedType = f'{typesplit[0]}.{h1types[index]}'
                                 elif totalAvg > 30 <= 80:
                                     suggestedType = f'{instanceType}'
                                 elif totalAvg > 80:
                                     try:
-                                        suggestedType = f'{typesplit[0]}.{h1types[typeindex+1]}'
+                                        index = typeindex + 1
+                                        suggestedType = f'{typesplit[0]}.{h1types[index]}'
                                     except IndexError:
                                         suggestedType = f'i3.{i3types[6]}'
                             elif typesplit[0] == 'i3':
@@ -713,31 +794,52 @@ class Main:
                                 if totalAvg <= 5:
                                     suggestedType = f'{typesplit[0]}.{i3types[0]}'
                                 elif totalAvg > 5 <= 30:
-                                    try:
-                                        suggestedType = f'{typesplit[0]}.{i3types[typeindex-1]}'
-                                    except ValueError:
+                                    index = typeindex - 1
+                                    if index < 0:
                                         suggestedType = f'{typesplit[0]}.{i3types[0]}'
+                                    else:
+                                        suggestedType = f'{typesplit[0]}.{i3types[index]}'
                                 elif totalAvg > 30 <= 80:
                                     suggestedType = f'{instanceType}'
                                 elif totalAvg > 80:
                                     try:
-                                        suggestedType = f'{typesplit[0]}.{i3types[typeindex+1]}'
+                                        index = typeindex + 1
+                                        suggestedType = f'{typesplit[0]}.{i3types[index]}'
                                     except IndexError:
                                         suggestedType = f'i3.{i3types[6]}'
+                            elif typesplit[0] == 'i2': # PrevGen Upgread to i3
+                                typeindex = i2types.index(f'{typesplit[1]}')
+                                if totalAvg <= 5:
+                                    suggestedType = f'i3.{i3types[0]}*'
+                                elif totalAvg > 5 <= 30:
+                                    try:
+                                        suggestedType = f'i3.{i3types[typeindex]}*'
+                                    except ValueError:
+                                        suggestedType = f'i3.{i3types[0]}*'
+                                elif totalAvg > 30 <= 80:
+                                    suggestedType = f'i3.{i3types[typeindex]}*'
+                                elif totalAvg > 80:
+                                    try:
+                                        index = typeindex + 2
+                                        suggestedType = f'i3.{i3types[index]}*'
+                                    except IndexError:
+                                        suggestedType = f'i3.{i3types[6]}*'
                             elif typesplit[0] == 'd2':
                                 typeindex = d2types.index(f'{typesplit[1]}')
                                 if totalAvg <= 5:
                                     suggestedType = f'{typesplit[0]}.{d2types[0]}'
                                 elif totalAvg > 5 <= 30:
-                                    try:
-                                        suggestedType = f'{typesplit[0]}.{d2types[typeindex-1]}'
-                                    except ValueError:
+                                    index = typeindex - 1
+                                    if index < 0:
                                         suggestedType = f'{typesplit[0]}.{d2types[0]}'
+                                    else:
+                                        suggestedType = f'{typesplit[0]}.{d2types[index]}'
                                 elif totalAvg > 30 <= 80:
                                     suggestedType = f'{instanceType}'
                                 elif totalAvg > 80:
                                     try:
-                                        suggestedType = f'{typesplit[0]}.{d2types[typeindex+1]}'
+                                        index = typeindex + 1
+                                        suggestedType = f'{typesplit[0]}.{d2types[index]}'
                                     except IndexError:
                                         suggestedType = f'd2.{d2types[3]}'
 
@@ -793,6 +895,7 @@ class Main:
                 DBInstanceIdentifier = base['DBInstanceIdentifier']
                 DBInstanceClass = base['DBInstanceClass']
                 DBInstnaceArn = base['DBInstanceArn']
+                DBEngine = base['Engine']
                 if DBInstanceStatus == 'available':
                     try:
                         tags = rdsc.list_tags_for_resource(
@@ -918,159 +1021,181 @@ class Main:
 
                         typesplit = DBInstanceClass.split('.')
 
-                        # If instance is already t2.nano, keep it the same
-
-                        if DBInstanceClass == 'db.t2.nano':
-                            suggestedType = f't2.{dbt2types[0]}'
-
-                        # Suggest upgrades for previous generation instances per AWS guidance
-
-                        # If instance is PrevGen db.t1.micro, suggest db.t2.nano
-
-                        if DBInstanceClass == 'db.t1.micro':
-                            suggestedType = f'{typesplit[0]}.t2.{dbt2types[0]}*'
-
-                        # If instance is PrevGen m1 class, suggest t2 class
-
-                        if typesplit[1] == 'm1':
-                            if typesplit[2] == 'small':
-                                suggestedType = f'{typesplit[0]}.t2.{dbt2types[1]}*'
-                            elif typesplit[2] == 'medium':
-                                suggestedType = f'{typesplit[0]}.t2.{dbt2types[2]}*'
-                            elif typesplit[2] == 'large':
-                                suggestedType = f'{typesplit[0]}.t2.{dbt2types[3]}*'
-                            elif typesplit[2] == 'xlarge':
-                                suggestedType = f'{typesplit[0]}.t2.{dbt2types[4]}*'
-
-                        # If instance is PrevGen m2 class, suggest r3 class
-
-                        if typesplit[1] == 'm2':
-                            if typesplit[2] == 'xlarge':
-                                suggestedType = f'{typesplit[0]}.t2.{dbr3types[2]}*'
-                            elif typesplit[2] == '2xlarge':
-                                suggestedType = f'{typesplit[0]}.t2.{dbr3types[3]}*'
-                            elif typesplit[2] == '4xlarge':
-                                suggestedType = f'{typesplit[0]}.t2.{dbr3types[4]}*'
-
                         # Suggest Instance Types based on AVG CPU usage keeping general instance type class
-                        # current gen only
 
                         if typesplit[1] == 't2':
                             typeindex = dbt2types.index(f'{typesplit[2]}')
                             if totalAvg <= 5:
                                 suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbt2types[0]}'
                             elif totalAvg > 5 <= 30:
-                                try:
-                                    suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbt2types[typeindex-1]}'
-                                except ValueError:
+                                index = typeindex - 1
+                                if index < 0:
                                     suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbt2types[0]}'
+                                else:
+                                    suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbt2types[index]}'
                             elif totalAvg > 30 <= 80:
                                 suggestedType = f'{DBInstanceClass}'
                             elif totalAvg > 80:
                                 try:
-                                    suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbt2types[typeindex+1]}'
+                                    index = typeindex + 1
+                                    suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbt2types[index]}'
                                 except IndexError:
                                     suggestedType = f'{typesplit[0]}.m4.{dbm4types[3]}'
 
-                        if typesplit[1] == 'm4':
+                        elif typesplit[1] == 't1': # PrevGen Upgrade to t2
+                            suggestedType = f'{typesplit[0]}.t2.{dbt2types[0]}*'
+
+                        elif typesplit[1] == 'm4':
                             typeindex = dbm4types.index(f'{typesplit[2]}')
                             if totalAvg <= 5:
                                 suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbm4types[0]}'
                             elif totalAvg > 5 <= 30:
-                                try:
-                                    suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbm4types[typeindex-1]}'
-                                except ValueError:
+                                index = typeindex - 1
+                                if index < 0:
                                     suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbm4types[0]}'
+                                else:
+                                    suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbm4types[index]}'
                             elif totalAvg > 30 <= 80:
                                 suggestedType = f'{DBInstanceClass}'
                             elif totalAvg > 80:
                                 try:
-                                    suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbm4types[typeindex+1]}'
+                                    index = typeindex + 1
+                                    suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbm4types[index]}'
                                 except IndexError:
                                     suggestedType = f'{typesplit[0]}.x1e.{dbx1etypes[4]}'
 
-                        if typesplit[1] == 'm3':
+                        elif typesplit[1] == 'm3':
                             typeindex = dbm3types.index(f'{typesplit[2]}')
                             if totalAvg <= 5:
                                 suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbm3types[0]}'
                             elif totalAvg > 5 <= 30:
-                                try:
-                                    suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbm3types[typeindex-1]}'
-                                except ValueError:
+                                index = typeindex - 1
+                                if index < 0:
                                     suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbm3types[0]}'
+                                else:
+                                    suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbm3types[index]}'
                             elif totalAvg > 30 <= 80:
                                 suggestedType = f'{DBInstanceClass}'
                             elif totalAvg > 80:
                                 try:
-                                    suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbm3types[typeindex+1]}'
+                                    index = typeindex + 1
+                                    suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbm3types[index]}'
                                 except IndexError:
                                     suggestedType = f'{typesplit[0]}.m4.{dbm4types[3]}'
 
-                        if typesplit[1] == 'r4':
+                        elif typesplit[1] == 'm2': # PrevGen Upgrade to R3
+                            typeindex = dbm2types.index(f'{typesplit[2]}')
+                            if totalAvg <= 5:
+                                suggestedType = f'{typesplit[0]}.r3.{dbr3types[0]}'
+                            elif totalAvg > 5 <= 30:
+                                index = typeindex - 1
+                                if index < 0:
+                                    suggestedType = f'{typesplit[0]}.r3.{dbr3types[0]}'
+                                else:
+                                    suggestedType = f'{typesplit[0]}.r3.{dbr3types[index]}'
+                            elif totalAvg > 30 <= 80:
+                                index = typeindex
+                                suggestedType = f'{typesplit[0]}.r3.{dbr3types[index]}'
+                            elif totalAvg > 80:
+                                try:
+                                    index = typeindex + 1
+                                    suggestedType = f'{typesplit[0]}.r3.{dbr3types[index]}'
+                                except IndexError:
+                                    suggestedType = f'{typesplit[0]}.r3.{dbr3types[4]}'
+
+                        elif typesplit[1] == 'm1': # PrevGen Upgrade to t2
+                            typeindex = dbm1types.index(f'{typesplit[2]}')
+                            if totalAvg <= 5:
+                                suggestedType = f'{typesplit[0]}.t2.{dbt2types[0]}'
+                            elif totalAvg > 5 <= 30:
+                                index = typeindex - 1
+                                if index < 0:
+                                    suggestedType = f'{typesplit[0]}.t2.{dbt2types[0]}'
+                                else:
+                                    suggestedType = f'{typesplit[0]}.t2.{dbt2types[index]}'
+                            elif totalAvg > 30 <= 80:
+                                index = typeindex + 1
+                                suggestedType = f'{typesplit[0]}.t2.{dbt2types[index]}'
+                            elif totalAvg > 80:
+                                try:
+                                    index = typeindex + 1
+                                    suggestedType = f'{typesplit[0]}.t2.{dbt2types[index]}'
+                                except IndexError:
+                                    suggestedType = f'{typesplit[0]}.t2.{dbt2types[3]}'
+
+                        elif typesplit[1] == 'r4':
                             typeindex = dbr4types.index(f'{typesplit[2]}')
                             if totalAvg <= 5:
                                 suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbr4types[0]}'
                             elif totalAvg > 5 <= 30:
-                                try:
-                                    suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbr4types[typeindex-1]}'
-                                except ValueError:
+                                index = typeindex - 1
+                                if index < 0:
                                     suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbr4types[0]}'
+                                else:
+                                    suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbr4types[index]}'
                             elif totalAvg > 30 <= 80:
                                 suggestedType = f'{DBInstanceClass}'
                             elif totalAvg > 80:
                                 try:
-                                    suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbr4types[typeindex+1]}'
+                                    index = typeindex + 1
+                                    suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbr4types[index]}'
                                 except IndexError:
                                     suggestedType = f'{typesplit[0]}.x1e.{dbx1etypes[4]}'
 
-                        if typesplit[1] == 'r3':
+                        elif typesplit[1] == 'r3':
                             typeindex = dbr3types.index(f'{typesplit[2]}')
                             if totalAvg <= 5:
                                 suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbr3types[0]}'
                             elif totalAvg > 5 <= 30:
-                                try:
-                                    suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbr3types[typeindex-1]}'
-                                except ValueError:
+                                index = typeindex - 1
+                                if index < 0:
                                     suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbr3types[0]}'
+                                else:
+                                    suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbr3types[index]}'
                             elif totalAvg > 30 <= 80:
                                 suggestedType = f'{DBInstanceClass}'
                             elif totalAvg > 80:
                                 try:
-                                    suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbr3types[typeindex+1]}'
+                                    index = typeindex + 1
+                                    suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbr3types[index]}'
                                 except IndexError:
                                     suggestedType = f'{typesplit[0]}.r4.{dbr4types[5]}'
 
-                        if typesplit[1] == 'x1e':
+                        elif typesplit[1] == 'x1e':
                             typeindex = dbx1etypes.index(f'{typesplit[2]}')
                             if totalAvg <= 5:
                                 suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbx1etypes[0]}'
                             elif totalAvg > 5 <= 30:
-                                try:
-                                    suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbx1etypes[typeindex-1]}'
-                                except ValueError:
+                                index = typeindex - 1
+                                if index < 0:
                                     suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbx1etypes[0]}'
+                                else:
+                                    suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbx1etypes[index]}'
                             elif totalAvg > 30 <= 80:
                                 suggestedType = f'{DBInstanceClass}'
                             elif totalAvg > 80:
                                 try:
-                                    suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbx1etypes[typeindex+1]}'
+                                    index = typeindex + 1
+                                    suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbx1etypes[index]}'
                                 except IndexError:
                                     suggestedType = f'{typesplit[0]}.x1e.{dbx1etypes[5]}'
 
-                        if typesplit[1] == 'x1':
+                        elif typesplit[1] == 'x1':
                             typeindex = dbx1types.index(f'{typesplit[2]}')
                             if totalAvg <= 5:
                                 suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbx1types[0]}'
                             elif totalAvg > 5 <= 30:
-                                try:
-                                    suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbx1types[typeindex]-1}'
-                                except ValueError:
+                                index = typeindex -1
+                                if index < 0:
                                     suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbx1types[0]}'
+                                else:
+                                    suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbx1types[index]}'
                             elif totalAvg > 30 <= 80:
                                 suggestedType = f'{DBInstanceClass}'
                             elif totalAvg > 80:
                                 try:
-                                    suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbx1types[typeindex+1]}'
+                                    index = typeindex + 1
+                                    suggestedType = f'{typesplit[0]}.{typesplit[1]}.{dbx1types[index]}'
                                 except IndexError:
                                     suggestedType = f'{typesplit[0]}.x1e.{dbx1etypes[5]}'
 
@@ -1083,6 +1208,7 @@ class Main:
                     {
                         'Id': f'{DBInstanceIdentifier}',
                         'Name': f'{instanceName}',
+                        'Engine': f'{DBEngine}',
                         'App': f'{appId}',
                         'AvgCpu': totalAvg,
                         'CurrentType': f'{DBInstanceClass}',
@@ -1098,28 +1224,78 @@ class Main:
         return info
 
     def main(self):
-        extra = {
-            'Id': '* - AWS Suggested Upgrade',
-            'Name': '',
-            'App': '',
-            'AvgCpu': '',
-            'CurrentType': '',
-            'SuggestedType': ''
-        }
-        with open(self.output, 'w', newline='') as f:
-            fieldnames = [
-                'Id',
-                'Name',
-                'App',
-                'AvgCpu',
-                'CurrentType',
-                'SuggestedType'
-            ]
-            w = csv.DictWriter(f, fieldnames)
-            w.writeheader()
-            for r in self.getec2suggestions():
-                w.writerow(r)
-            for r in self.getrdssuggestions():
-                w.writerow(r)
-            csv.writer(f).writerow('')
-            w.writerow(extra)
+        if args.ec2only:
+            extra = {
+                'Id': '* - AWS Suggested Upgrade'
+            }
+            with open('ec2_'+f'{self.output}', 'w', newline='') as f:
+                fieldnames = [
+                    'Id',
+                    'Name',
+                    'App',
+                    'AvgCpu',
+                    'CurrentType',
+                    'SuggestedType'
+                ]
+                w = csv.DictWriter(f, fieldnames)
+                w.writeheader()
+                for r in self.getec2suggestions():
+                    w.writerow(r)
+                csv.writer(f).writerow('')
+                w.writerow(extra)
+        elif args.rdsonly:
+            extra = {
+                'Id': '* - AWS Suggested Upgrade'
+            }
+            with open('rds_'+f'{self.output}', 'w', newline='') as f:
+                fieldnames = [
+                    'Id',
+                    'Name',
+                    'Engine',
+                    'App',
+                    'AvgCpu',
+                    'CurrentType',
+                    'SuggestedType'
+                ]
+                w = csv.DictWriter(f, fieldnames)
+                w.writeheader()
+                for r in self.getrdssuggestions():
+                    w.writerow(r)
+                csv.writer(f).writerow('')
+                w.writerow(extra)
+        else:
+            extra = {
+                'Id': '* - AWS Suggested Upgrade'
+            }
+            with open('ec2_' + f'{self.output}', 'w', newline='') as f:
+                fieldnames = [
+                    'Id',
+                    'Name',
+                    'App',
+                    'AvgCpu',
+                    'CurrentType',
+                    'SuggestedType'
+                ]
+                w = csv.DictWriter(f, fieldnames)
+                w.writeheader()
+                for r in self.getec2suggestions():
+                    w.writerow(r)
+                csv.writer(f).writerow('')
+                w.writerow(extra)
+
+            with open('rds_' + f'{self.output}', 'w', newline='') as f:
+                fieldnames = [
+                    'Id',
+                    'Name',
+                    'Engine',
+                    'App',
+                    'AvgCpu',
+                    'CurrentType',
+                    'SuggestedType'
+                ]
+                w = csv.DictWriter(f, fieldnames)
+                w.writeheader()
+                for r in self.getrdssuggestions():
+                    w.writerow(r)
+                csv.writer(f).writerow('')
+                w.writerow(extra)

@@ -56,6 +56,18 @@ parser.add_argument(
     help='The name/location of the csv file to output',
     default=f'report_{datetime.datetime.date(datetime.datetime.now())}.csv'
 )
+parser.add_argument(
+    '-e', '--ec2-only',
+    action='store_true',
+    dest='ec2only',
+    help='Run this tool against EC2 Instances only',
+)
+parser.add_argument(
+    '-d', '--rds-only',
+    action='store_true',
+    dest='rdsonly',
+    help='Run this tool against RDS Instances only',
+)
 args = parser.parse_args()
 
 
