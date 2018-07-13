@@ -7,7 +7,7 @@ This tool is designed and written in Python 3.6.5 to help you determine the righ
 ```
 usage: rightsizer.py [-h] [-p PROFILE] [-k ACCESSKEY] [-s SECRETKEY]
                      [-r REGION] [-t THRESHOLD THRESHOLD] [-q QUERY]
-                     [-o OUTPUT]
+                     [-o OUTPUT] [-e] [-d]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -25,6 +25,9 @@ optional arguments:
                         The amount of [days, period] to query Cloudwatch for
   -o OUTPUT, --output OUTPUT
                         The name/location of the csv file to output
+  -e, --ec2-only        Run this tool against EC2 Instances only
+  -d, --rds-only        Run this tool against RDS Instances only
+
 ```
 
 ## Installation:
@@ -68,6 +71,10 @@ If you don't want to have the tool pull 30 days worth of data, or if you don't w
 ```python rightsizer.py -p dev -q 15,900```
 
 This will tell the tool to query 15 days at 15 minute intervals.
+
+To run against just your EC2 assets, just issue the -e flag.
+
+To run against just your RDS assets, just issue the -d flag.
 
 Let me know if you find bugs :)
 
