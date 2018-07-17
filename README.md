@@ -2,6 +2,8 @@
 
 This tool is designed and written in Python 3.6.5 to help you determine the right AWS EC2/RDS instance type for your servers based on historical usage.
 
+**Note:** As this tool was written in Python 3.6.5, I've taken very little consideration as to backwards compatability, so a python version of 3.6.5 is required at minimum. If there is a question of your python version, run ```python3 --version``` to check your current version.
+
 ## Usage:
 
 ```
@@ -31,12 +33,13 @@ optional arguments:
 ```
 
 ## Installation:
+This tool is best run in a virtual environment. You may need to install a virtual environment tool such as python3-venv or python3-virutalenv via your package manager and/or install one via pip by running ```pip install virtualenv --user```.
 
 1. ```git clone https://github.com/gregoryjordanm/awsrightsizer.git```
 
 2. ```cd ./awsrightsizer```
 
-3. ```python3 -m venv venv```
+3. ```python3 -m venv venv``` or ```virtualenv -p python3 venv```
 
 4. ```. ./venv/bin/activate```
 
