@@ -852,7 +852,7 @@ class Main:
                         {
                             'Id': f'{instanceId}',
                             'Name': f'{instanceName}',
-                            'App': f'{appId}',
+                            'App': f"{appId or 'Unavailable'}",
                             'AvgCpu': totalAvg,
                             'CurrentType': f'{instanceType}',
                             'SuggestedType': f'{suggestedType}'
@@ -1209,7 +1209,7 @@ class Main:
                         'Id': f'{DBInstanceIdentifier}',
                         'Name': f'{instanceName}',
                         'Engine': f'{DBEngine}',
-                        'App': f'{appId}',
+                        'App': f"{appId or 'Unavailable'}",
                         'AvgCpu': totalAvg,
                         'CurrentType': f'{DBInstanceClass}',
                         'SuggestedType': f'{suggestedType}'
