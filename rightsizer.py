@@ -72,5 +72,8 @@ args = parser.parse_args()
 
 
 if __name__ == "__main__":
-    run = classes.Main()
-    run.main()
+    if args.profile and args.keyCreds:
+        raise argparse.ArgumentError
+    else:
+        run = classes.Main()
+        run.main()
