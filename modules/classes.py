@@ -100,12 +100,9 @@ class Main:
                     if instanceState != 'terminated':
                         try:
                             for c in range(0, len(base['Tags'])):
-                                if base['Tags'][c]['Key'] == 'ApplicationID':
-                                    appId = base['Tags'][c]['Value']
                                 if base['Tags'][c]['Key'] == 'Name':
                                     instanceName = base['Tags'][c]['Value']
                         except KeyError:
-                            appId = 'Unknown'
                             instanceName = 'Unknown'
                         try:
                             res = cwc.get_metric_statistics(
@@ -852,7 +849,6 @@ class Main:
                         {
                             'Id': f'{instanceId}',
                             'Name': f'{instanceName}',
-                            'App': f"{appId or 'Unavailable'}",
                             'AvgCpu': totalAvg,
                             'CurrentType': f'{instanceType}',
                             'SuggestedType': f'{suggestedType}'
@@ -894,26 +890,8 @@ class Main:
                 DBInstanceStatus = base['DBInstanceStatus']
                 DBInstanceIdentifier = base['DBInstanceIdentifier']
                 DBInstanceClass = base['DBInstanceClass']
-                DBInstnaceArn = base['DBInstanceArn']
                 DBEngine = base['Engine']
                 if DBInstanceStatus == 'available':
-                    try:
-                        tags = rdsc.list_tags_for_resource(
-                            ResourceName=f'{DBInstnaceArn}',
-                        )
-                        for b in range(0, len(tags['TagList'])):
-                            tagbase = tags['TagList'][b]
-                            if tagbase['Key'] == 'ApplicationID':
-                                appId = tagbase['Value']
-                            else:
-                                appId = 'Unassigned'
-                            if tagbase['Key'] == 'Name':
-                                instanceName = tagbase['Value']
-                            else:
-                                instanceName = DBInstanceIdentifier
-                    except ClientError as e:
-                        logger.error(f'Failed to list rds tags... {e}')
-                        return []
                     try:
                         res = cwc.get_metric_statistics(
                             Namespace='AWS/RDS',
@@ -1209,7 +1187,6 @@ class Main:
                         'Id': f'{DBInstanceIdentifier}',
                         'Name': f'{instanceName}',
                         'Engine': f'{DBEngine}',
-                        'App': f"{appId or 'Unavailable'}",
                         'AvgCpu': totalAvg,
                         'CurrentType': f'{DBInstanceClass}',
                         'SuggestedType': f'{suggestedType}'
@@ -1232,7 +1209,6 @@ class Main:
                 fieldnames = [
                     'Id',
                     'Name',
-                    'App',
                     'AvgCpu',
                     'CurrentType',
                     'SuggestedType'
@@ -1252,7 +1228,6 @@ class Main:
                     'Id',
                     'Name',
                     'Engine',
-                    'App',
                     'AvgCpu',
                     'CurrentType',
                     'SuggestedType'
@@ -1271,7 +1246,6 @@ class Main:
                 fieldnames = [
                     'Id',
                     'Name',
-                    'App',
                     'AvgCpu',
                     'CurrentType',
                     'SuggestedType'
@@ -1288,7 +1262,6 @@ class Main:
                     'Id',
                     'Name',
                     'Engine',
-                    'App',
                     'AvgCpu',
                     'CurrentType',
                     'SuggestedType'
