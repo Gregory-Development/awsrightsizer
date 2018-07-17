@@ -891,6 +891,7 @@ class Main:
                 DBInstanceIdentifier = base['DBInstanceIdentifier']
                 DBInstanceClass = base['DBInstanceClass']
                 DBEngine = base['Engine']
+                DBName = base['DBName']
                 if DBInstanceStatus == 'available':
                     try:
                         res = cwc.get_metric_statistics(
@@ -1185,7 +1186,7 @@ class Main:
                 info.append(
                     {
                         'Id': f'{DBInstanceIdentifier}',
-                        'Name': f'{instanceName}',
+                        'Name': f'{DBName}',
                         'Engine': f'{DBEngine}',
                         'AvgCpu': totalAvg,
                         'CurrentType': f'{DBInstanceClass}',
