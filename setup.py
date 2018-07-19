@@ -13,7 +13,7 @@ setup(
           'Development Status :: 5 - Production/Stable',
           'Intended Audience :: System Administrators',
           'License :: OSI Approved :: Apache Software License',
-          'Programming Language :: Python :: 3.6.5'
+          'Programming Language :: Python :: 3'
     ],
     install_requires=[
         'boto3',
