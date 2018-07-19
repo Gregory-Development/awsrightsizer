@@ -2,8 +2,6 @@
 
 This tool is designed and written in Python 3.6.5 to help you determine the right AWS EC2/RDS instance type for your servers based on historical usage.
 
-**Note:** As this tool was written in Python 3.6.5, I've taken very little consideration as to backwards compatability, so a python version of 3.6.5 is required at minimum. If there is a question of your python version, run ```python3 --version``` to check your current version.
-
 ## Usage:
 
 ```
