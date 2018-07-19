@@ -62,29 +62,31 @@ Lets also assume that you have already run the ```aws configure``` command and h
 
 To run this tool with your working profile, simply do the following:
 
-```python rightsizer.py -p dev```
+```rightsizer -p dev```
 
 The tool will output a "report_*date*.csv" file in the directory you ran it in.
 
 Lets now assume that you hate my report name, simply run:
 
-```python rightsizer.py -p dev -o your_awesome_new_csv.csv```
+```rightsizer -p dev -o your_awesome_new_csv.csv```
 
 The tool will now use your_awesome_new_csv.csv is the output file.
 
 If you don't have an AWS profile set up for some reason (it really does make life easier), then you can use the -k, -s. and -r flags to provide the necessary info.
 
-```python rightsizer.py -k XXXXXXXXXXXX -s XXXXXXXXXXXXXXXXXXXXXXXX -r us-east-1```
+```rightsizer -k XXXXXXXXXXXX -s XXXXXXXXXXXXXXXXXXXXXXXX -r us-east-1```
 
 If you don't want to have the tool pull 30 days worth of data, or if you don't want the data periods to be 30 minutes, use the -q flag like so:
 
-```python rightsizer.py -p dev -q 15,900```
+```rightsizer -p dev -q 15,900```
 
 This will tell the tool to query 15 days at 15 minute intervals.
 
 To run against just your EC2 assets, just issue the -e flag.
 
 To run against just your RDS assets, just issue the -d flag.
+
+If you are running this via the source, you will need to add ```python rightsizer.py``` to your command instead of just ```rightsizer```. 
 
 Let me know if you find bugs :)
 
