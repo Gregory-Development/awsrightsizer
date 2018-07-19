@@ -33,6 +33,13 @@ optional arguments:
 ```
 
 ## Installation:
+A pip package is available for this tool. This is the recommended way to install and run the tool. Download and run the tool using the steps below:
+
+1. ```python3 -m pip install awsrightsizer --user```
+
+2. ```rightsizer [OPTIONS]```
+
+## Source Installation:
 This tool is best run in a virtual environment. You may need to install a virtual environment tool such as python3-venv or python3-virutalenv via your package manager and/or install one via pip by running ```pip install virtualenv --user```.
 
 1. ```git clone https://github.com/gregoryjordanm/awsrightsizer.git```
