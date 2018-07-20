@@ -1,3 +1,5 @@
+[![PyPI version](https://badge.fury.io/py/awsrightsizer.svg)](https://badge.fury.io/py/awsrightsizer)
+
 # AWS EC2/RDS Instance Right-Sizer
 
 This tool is designed and written in Python 3.6.5 to help you determine the right AWS EC2/RDS instance type for your servers based on historical usage.
