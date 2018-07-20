@@ -1,4 +1,4 @@
-[![PyPI version](https://badge.fury.io/py/awsrightsizer.svg)](https://badge.fury.io/py/awsrightsizer)
+[![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/) [![PyPI pyversions](https://img.shields.io/pypi/pyversions/ansicolortags.svg)](https://pypi.python.org/pypi/ansicolortags/) [![PyPI version](https://badge.fury.io/py/awsrightsizer.svg)](https://badge.fury.io/py/awsrightsizer) [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity) [![Open Source Love png2](https://badges.frapsoft.com/os/v2/open-source.png?v=103)](https://github.com/ellerbrock/open-source-badges/)
 
 # AWS EC2/RDS Instance Right-Sizer
 
