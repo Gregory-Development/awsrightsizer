@@ -7,7 +7,7 @@ with open(path.join(this_dir, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='awsrightsizer',
-    version='1.0.3',
+    version='1.0.4',
     packages=['rightsizer'],
     url='https://github.com/gregoryjordanm/awsrightsizer.git',
     license='Apache-2.0',
