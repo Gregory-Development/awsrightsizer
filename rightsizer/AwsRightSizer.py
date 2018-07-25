@@ -139,7 +139,8 @@ class Main:
                             if base['Tags'][c]['Key'] == 'Name':
                                 instanceName = base['Tags'][c]['Value']
                     except KeyError:
-                        instanceName = 'Unknown'
+                        logger.info("Instance Name Undefined, Setting to 'Undefined'")
+                        instanceName = 'Undefined'
                     try:
                         res = cwc.get_metric_statistics(
                             Namespace='AWS/EC2',
@@ -960,7 +961,7 @@ class Main:
             try:
                 DBName = base['DBName']
             except KeyError:
-                logger.error('RDS DB Name Undefined')
+                logger.info("RDS DB Name Undefined, setting to 'Undefined'")
                 DBName = 'Undefined'
             except Exception as e:
                 logger.exception('General Exception ... {}'.format(e))
