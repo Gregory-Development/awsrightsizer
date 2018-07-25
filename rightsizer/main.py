@@ -88,10 +88,14 @@ def main():
         output=args.output
     )
     if args.ec2only:
+        if args.profile:
+            pf = args.profile
+        else:
+            pf = args.region
         extra = {
             'Id': '* - AWS Suggested Upgrade'
         }
-        with open('ec2_'+'{}'.format(x.output), 'w', newline='') as f:
+        with open('{}_ec2_'+'{}'.format(pf, x.output), 'w', newline='') as f:
             fieldnames = [
                 'Id',
                 'Name',
@@ -106,10 +110,14 @@ def main():
             csv.writer(f).writerow('')
             w.writerow(extra)
     elif args.rdsonly:
+        if args.profile:
+            pf = args.profile
+        else:
+            pf = args.region
         extra = {
             'Id': '* - AWS Suggested Upgrade'
         }
-        with open('rds_'+'{}'.format(x.output), 'w', newline='') as f:
+        with open('{}_rds_'+'{}'.format(pf, x.output), 'w', newline='') as f:
             fieldnames = [
                 'Id',
                 'Name',
@@ -125,10 +133,15 @@ def main():
             csv.writer(f).writerow('')
             w.writerow(extra)
     else:
+        if args.profile:
+            pf = args.profile
+        else:
+            pf = args.region
         extra = {
             'Id': '* - AWS Suggested Upgrade'
         }
-        with open('ec2_' + '{}'.format(x.output), 'w', newline='') as f:
+
+        with open('{}_ec2_' + '{}'.format(pf, x.output), 'w', newline='') as f:
             fieldnames = [
                 'Id',
                 'Name',
@@ -143,7 +156,7 @@ def main():
             csv.writer(f).writerow('')
             w.writerow(extra)
 
-        with open('rds_' + '{}'.format(x.output), 'w', newline='') as f:
+        with open('{}_rds_' + '{}'.format(pf, x.output), 'w', newline='') as f:
             fieldnames = [
                 'Id',
                 'Name',
