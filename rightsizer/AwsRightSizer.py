@@ -298,6 +298,24 @@ class Main:
                             '16xlarge',
                         ]
 
+                        r5types = [
+                            'large',
+                            'xlarge',
+                            '2xlarge',
+                            '4xlarge',
+                            '12xlarge',
+                            '24xlarge',
+                        ]
+
+                        r5dtypes = [
+                            'large',
+                            'xlarge',
+                            '2xlarge',
+                            '4xlarge',
+                            '12xlarge',
+                            '24xlarge',
+                        ]
+
                         x1types = [
                             '16xlarge',
                             '32xlarge'
@@ -310,6 +328,15 @@ class Main:
                             '8xlarge',
                             '16xlarge',
                             '32xlarge',
+                        ]
+
+                        z1dtypes = [
+                            'large',
+                            'xlarge',
+                            '2xlarge',
+                            '3xlarge',
+                            '6xlarge',
+                            '12xlarge',
                         ]
 
                         # GPU/Accelerated Compute Optimized Instance Types
@@ -671,6 +698,60 @@ class Main:
                                     suggestedType = '{}.{}'.format(typesplit[0], x1etypes[index])
                                 except IndexError:
                                     suggestedType = 'x1e.{}'.format(x1etypes[5])
+                        elif typesplit[0] == 'z1d':
+                            typeindex = z1dtypes.index('{}'.format(typesplit[1]))
+                            if totalAvg <= 5:
+                                suggestedType = '{}.{}'.format(typesplit[0], z1dtypes[0])
+                            elif totalAvg > 5 <= 30:
+                                index = typeindex - 1
+                                if index < 0:
+                                    suggestedType = '{}.{}'.format(typesplit[0], z1dtypes[0])
+                                else:
+                                    suggestedType = '{}.{}'.format(typesplit[0], z1dtypes[index])
+                            elif totalAvg > 30 <= 80:
+                                suggestedType = '{}'.format(instanceType)
+                            elif totalAvg > 80:
+                                try:
+                                    index = typeindex + 1
+                                    suggestedType = '{}.{}'.format(typesplit[0], z1dtypes[index])
+                                except IndexError:
+                                    suggestedType = 'x1.{}'.format(x1types[0])
+                        elif typesplit[0] == 'r5d':
+                            typeindex = r5dtypes.index('{}'.format(typesplit[1]))
+                            if totalAvg <= 5:
+                                suggestedType = '{}.{}'.format(typesplit[0], r5dtypes[0])
+                            elif totalAvg > 5 <= 30:
+                                index = typeindex - 1
+                                if index < 0:
+                                    suggestedType = '{}.{}'.format(typesplit[0], r5dtypes[0])
+                                else:
+                                    suggestedType = '{}.{}'.format(typesplit[0], r5dtypes[index])
+                            elif totalAvg > 30 <= 80:
+                                suggestedType = '{}'.format(instanceType)
+                            elif totalAvg > 80:
+                                try:
+                                    index = typeindex + 1
+                                    suggestedType = '{}.{}'.format(typesplit[0], r5dtypes[index])
+                                except IndexError:
+                                    suggestedType = 'x1.{}'.format(x1types[0])
+                        elif typesplit[0] == 'r5':
+                            typeindex = r5types.index('{}'.format(typesplit[1]))
+                            if totalAvg <= 5:
+                                suggestedType = '{}.{}'.format(typesplit[0], r5types[0])
+                            elif totalAvg > 5 <= 30:
+                                index = typeindex - 1
+                                if index < 0:
+                                    suggestedType = '{}.{}'.format(typesplit[0], r5types[0])
+                                else:
+                                    suggestedType = '{}.{}'.format(typesplit[0], r5types[index])
+                            elif totalAvg > 30 <= 80:
+                                suggestedType = '{}'.format(instanceType)
+                            elif totalAvg > 80:
+                                try:
+                                    index = typeindex + 1
+                                    suggestedType = '{}.{}'.format(typesplit[0], r5types[index])
+                                except IndexError:
+                                    suggestedType = 'x1.{}'.format(x1types[0])
                         elif typesplit[0] == 'r4':
                             typeindex = r4types.index('{}'.format(typesplit[1]))
                             if totalAvg <= 5:
@@ -688,7 +769,7 @@ class Main:
                                     index = typeindex + 1
                                     suggestedType = '{}.{}'.format(typesplit[0], r4types[index])
                                 except IndexError:
-                                    suggestedType = 'x1.{}'.format(x1types[0])
+                                    suggestedType = 'r5.{}'.format(r5types[5])
                         elif typesplit[0] == 'r3': # PrevGen Upgrade to R4
                             typeindex = r3types.index('{}'.format(typesplit[1]))
                             if totalAvg <= 5:
