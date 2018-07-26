@@ -39,6 +39,13 @@ A pip package is available for this tool. This is the recommended way to install
 
 2. ```rightsizer [OPTIONS]```
 
+## Upgrading
+Upgrading is easy as well with pip, simply issue the following commands:
+
+1. ```python3 -m pip install awsrightsizer --upgrade --user```
+
+2. ```rightsizer [OPTIONS]```
+
 ## Source Installation:
 This tool is best run in a virtual environment. You may need to install a virtual environment tool such as python3-venv or python3-virutalenv via your package manager and/or install one via pip by running ```pip install virtualenv --user```.
 
