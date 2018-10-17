@@ -1,7 +1,11 @@
-import sys
+# Standard Library Imports
 import csv
 import argparse
 from datetime import datetime
+
+# Third-party Imports
+
+# Local Imports
 from . import logger
 from .AwsRightSizer import Main
 

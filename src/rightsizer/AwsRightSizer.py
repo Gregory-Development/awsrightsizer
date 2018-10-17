@@ -1,7 +1,14 @@
+# Standard Library Imports
+from datetime import (
+    datetime,
+    timedelta,
+)
+
+# Third-Party Imports
 import boto3
-from datetime import datetime
-from datetime import timedelta
 from botocore.exceptions import ClientError
+
+# Local Imports
 from . import logger
 
 
@@ -28,7 +35,7 @@ class Main:
         self.queryPeriod = queryPeriod
         self.output = output
 
-    def serializedatetime(self, t):
+    def _serialize_datetime(self, t):
         """
         A method to serialize AWS datetime objects to be displayed as JSON (future use)
         :param t:
@@ -37,7 +44,7 @@ class Main:
         if isinstance(t, datetime):
             return t.__str__()
 
-    def initconnection(self, service):
+    def _init_connection(self, service):
         """
         A method to initialize an AWS service connection with access/secret access keys.
         :param service:
@@ -58,7 +65,7 @@ class Main:
             logger.exception('General Exception ... {}'.format(e))
             return []
 
-    def initprofile(self, service):
+    def _init_profile(self, service):
         """
         A method to initialize an AWS service connection with an AWS profile.
         :param service:
