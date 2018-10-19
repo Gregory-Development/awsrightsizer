@@ -1,4 +1,5 @@
 # Standard Library Imports
+import logging
 from datetime import (
     datetime,
     timedelta,
@@ -9,7 +10,7 @@ import boto3
 from botocore.exceptions import ClientError
 
 # Local Imports
-from . import logger
+# Placeholder
 
 
 class Main:
@@ -20,6 +21,7 @@ class Main:
             queryDays,
             queryPeriod,
             output,
+            verbose,
             accessKey=None,
             secretKey=None,
             region=None,
@@ -34,6 +36,13 @@ class Main:
         self.queryDays = queryDays
         self.queryPeriod = queryPeriod
         self.output = output
+        self.verbosity = verbose
+        self.logger = self._init_logger()
+
+    def _init_logger(self):
+        l = logging.Logger(__name__)
+        l.setLevel(self.verbosity)
+        return l
 
     def _serialize_datetime(self, t):
         """
@@ -59,10 +68,10 @@ class Main:
             c = s.client('{}'.format(service))
             return c
         except ClientError as e:
-            logger.error('Error Connecting with the provided credentials. {}'.format(e))
+            self.logger.error('Error Connecting with the provided credentials. {}'.format(e))
             return []
         except Exception as e:
-            logger.exception('General Exception ... {}'.format(e))
+            self.logger.exception('General Exception ... {}'.format(e))
             return []
 
     def _init_profile(self, service):
@@ -78,10 +87,10 @@ class Main:
             c = s.client('{}'.format(service))
             return c
         except ClientError as e:
-            logger.error('Error Connecting with the provided credentials... {}'.format(e))
+            self.logger.error('Error Connecting with the provided credentials... {}'.format(e))
             return []
         except Exception as e:
-            logger.exception('General Exception ... {}'.format(e))
+            self.logger.exception('General Exception ... {}'.format(e))
             return []
 
     def getec2suggestions(self):
@@ -90,18 +99,18 @@ class Main:
         :return: (dictionary) The dictionary result of the logic.
         """
         if self.accessKey is not None:
-            cwc = self.initconnection('cloudwatch')
-            ec2c = self.initconnection('ec2')
+            cwc = self._init_connection('cloudwatch')
+            ec2c = self._init_connection('ec2')
         else:
-            cwc = self.initprofile('cloudwatch')
-            ec2c = self.initprofile('ec2')
+            cwc = self._init_profile('cloudwatch')
+            ec2c = self._init_profile('ec2')
         try:
             response = ec2c.describe_instances()
         except ClientError as e:
-            logger.error('Failed to describe instances... {}'.format(e))
+            self.logger.error('Failed to describe instances... {}'.format(e))
             return []
         except Exception as e:
-            logger.exception('General Exception... {}'.format(e))
+            self.logger.exception('General Exception... {}'.format(e))
             return []
 
         now = datetime.now()
@@ -116,28 +125,28 @@ class Main:
                 try:
                     instanceState = base['State']['Name']
                 except KeyError:
-                    logger.exception('Instance State Undefined')
+                    self.logger.exception('Instance State Undefined')
                     return []
                 except Exception as e:
-                    logger.exception('General Exception ... {}'.format(e))
+                    self.logger.exception('General Exception ... {}'.format(e))
                     return []
 
                 try:
                     instanceId = base['InstanceId']
                 except KeyError:
-                    logger.exception('Instance Id Undefined')
+                    self.logger.exception('Instance Id Undefined')
                     return []
                 except Exception as e:
-                    logger.exception('General Exception ... {}'.format(e))
+                    self.logger.exception('General Exception ... {}'.format(e))
                     return []
 
                 try:
                     instanceType = base['InstanceType']
                 except KeyError:
-                    logger.exception('Instance Type Undefined')
+                    self.logger.exception('Instance Type Undefined')
                     return []
                 except Exception as e:
-                    logger.exception('Gerneral Exception ... {}'.format(e))
+                    self.logger.exception('Gerneral Exception ... {}'.format(e))
                     return []
 
                 if instanceState != 'terminated':
@@ -146,7 +155,7 @@ class Main:
                             if base['Tags'][c]['Key'] == 'Name':
                                 instanceName = base['Tags'][c]['Value']
                     except KeyError:
-                        logger.info("Instance Name Undefined, Setting to 'Undefined'")
+                        self.logger.info("Instance Name Undefined, Setting to 'Undefined'")
                         instanceName = 'Undefined'
                     try:
                         res = cwc.get_metric_statistics(
@@ -966,9 +975,9 @@ class Main:
                                     suggestedType = 'd2.{}'.format(d2types[3])
 
                     except ClientError as e:
-                        logger.error('Error getting metrics for instance {}...{}'.format(b, e))
+                        self.logger.error('Error getting metrics for instance {}...{}'.format(b, e))
                     except Exception as e:
-                        logger.exception('General Exception ... {}'.format(e))
+                        self.logger.exception('General Exception ... {}'.format(e))
 
                 info.append(
                     {
@@ -988,18 +997,18 @@ class Main:
         :return: (dictionary) The dictionary result of the logic.
         """
         if self.accessKey is not None:
-            cwc = self.initconnection('cloudwatch')
-            rdsc = self.initconnection('rds')
+            cwc = self._init_connection('cloudwatch')
+            rdsc = self._init_connection('rds')
         else:
-            cwc = self.initprofile('cloudwatch')
-            rdsc = self.initprofile('rds')
+            cwc = self._init_profile('cloudwatch')
+            rdsc = self._init_profile('rds')
         try:
             response = rdsc.describe_db_instances()
         except ClientError as e:
-            logger.error('Failed to describe rds instances... {}'.format(e))
+            self.logger.error('Failed to describe rds instances... {}'.format(e))
             return []
         except Exception as e:
-            logger.exception('General Exception ... {}'.format(e))
+            self.logger.exception('General Exception ... {}'.format(e))
             return []
 
         now = datetime.now()
@@ -1013,46 +1022,46 @@ class Main:
             try:
                 DBInstanceStatus = base['DBInstanceStatus']
             except KeyError:
-                logger.exception('RDS Instance Statue Undefined')
+                self.logger.exception('RDS Instance Statue Undefined')
                 return []
             except Exception as e:
-                logger.exception('General Exception ... {}'.format(e))
+                self.logger.exception('General Exception ... {}'.format(e))
                 return []
 
             try:
                 DBInstanceIdentifier = base['DBInstanceIdentifier']
             except KeyError:
-                logger.exception('RDS Instance Id Undefined')
+                self.logger.exception('RDS Instance Id Undefined')
                 return []
             except Exception as e:
-                logger.exception('General Exception ... {}'.format(e))
+                self.logger.exception('General Exception ... {}'.format(e))
                 return []
 
             try:
                 DBInstanceClass = base['DBInstanceClass']
             except KeyError:
-                logger.exception('RDS Instance Class Undefined')
+                self.logger.exception('RDS Instance Class Undefined')
                 return []
             except Exception as e:
-                logger.exception('General Exception ... {}'.format(e))
+                self.logger.exception('General Exception ... {}'.format(e))
                 return []
 
             try:
                 DBEngine = base['Engine']
             except KeyError:
-                logger.error('RDS DB Engine Undefined')
+                self.logger.error('RDS DB Engine Undefined')
                 DBEngine = 'Undefined'
             except Exception as e:
-                logger.exception('General Exception ... {}'.format(e))
+                self.logger.exception('General Exception ... {}'.format(e))
                 return []
 
             try:
                 DBName = base['DBName']
             except KeyError:
-                logger.info("RDS DB Name Undefined, setting to 'Undefined'")
+                self.logger.info("RDS DB Name Undefined, setting to 'Undefined'")
                 DBName = 'Undefined'
             except Exception as e:
-                logger.exception('General Exception ... {}'.format(e))
+                self.logger.exception('General Exception ... {}'.format(e))
                 return []
             if DBInstanceStatus == 'available':
                 try:
@@ -1341,9 +1350,9 @@ class Main:
                                 suggestedType = '{}.x1e.{}'.format(typesplit[0], dbx1etypes[5])
 
                 except ClientError as e:
-                    logger.error('Error getting metrics for instance {}...{}'.format(a, e))
+                    self.logger.error('Error getting metrics for instance {}...{}'.format(a, e))
                 except Exception as e:
-                    logger.exception('General Exception ... {}'.format(e))
+                    self.logger.exception('General Exception ... {}'.format(e))
 
             info.append(
                 {
