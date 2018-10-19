@@ -4,7 +4,7 @@ build-backend = "poetry.masonry.api"
 
 [tool.poetry]
 name = "awsrightsizer"
-version = "1.1.1"
+version = "1.1.2"
 description = "A Python3 tool to help you determine the correct instance types to use for your running EC2/RDS instances."
 authors = ["Jordan Gregory <jordan@gregory-dev.io>"]
 license = "Apache-2.0"

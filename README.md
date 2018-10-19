@@ -7,28 +7,24 @@ This tool is designed and written in Python 3.6.5 to help you determine the righ
 ## Usage:
 
 ```
-usage: rightsizer.py [-h] [-p PROFILE] [-k ACCESSKEY] [-s SECRETKEY]
-                     [-r REGION] [-t THRESHOLD THRESHOLD] [-q QUERY]
-                     [-o OUTPUT] [-e] [-d]
+uUsage: rightsizer.py [OPTIONS]
 
-optional arguments:
-  -h, --help            show this help message and exit
-  -p PROFILE, --profile PROFILE
-                        AWS Credentials Profile
-  -k ACCESSKEY, --access-key ACCESSKEY
-                        AWS Access Key Id
-  -s SECRETKEY, --secret-key SECRETKEY
-                        AWS Secret Access Key
-  -r REGION, --region REGION
-                        AWS Region
-  -t THRESHOLD THRESHOLD, --threshold THRESHOLD THRESHOLD
-                        The Cloudwatch [average, max] CPU usage threshold
-  -q QUERY, --query-config QUERY
-                        The amount of [days, period] to query Cloudwatch for
-  -o OUTPUT, --output OUTPUT
-                        The name/location of the csv file to output
-  -e, --ec2-only        Run this tool against EC2 Instances only
-  -d, --rds-only        Run this tool against RDS Instances only
+  rightsizer takes user input and provides an output CSV of suggestions.
+
+Options:
+  -p, --profile TEXT             Your AWS Credentials Profile.
+  -k, --access-key TEXT          Your AWS Access Key ID.
+  -s, --secret-key TEXT          Your AWS Secret Access Key ID.
+  -r, --region TEXT              The AWS Region to query.
+  -t, --threshold INTEGER...     The Cloudwatch [average, max] CPU usage
+                                 threshold.
+  -q, --query-config INTEGER...  The amount of [days, period] to query
+                                 Cloudwatch for.
+  -o, --output TEXT              The Name/Location of the file to output.
+  -e, --ec2-only
+  -d, --rds-only
+  -v, --verbose
+  -h, --help                     Print help message
 
 ```
 
