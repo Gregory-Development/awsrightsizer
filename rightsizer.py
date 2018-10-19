@@ -1,4 +1,4 @@
-from rightsizer.main import main
+from src.rightsizer.main import main
 
 
 if __name__ == "__main__":
